@@ -6,5 +6,8 @@ Programa realizado en Python con el framework Flask en el que se consultará el 
 ``` py -m env nombre del entorno ```
 - Instala Flask con el comando
 ```pip install flask```
-- Una vez realizada la instalación de flask, ejecuta el comando 
+- Ejecuta el siguiente comando y, después, crea un documento .env
+```pip install python -dotenv```
+- Añade a ese documento ``` FLASK_APP=main.py ``` y ```FLASK_DEBUG=True``` para poder ejecutar el debug de la aplicación con el comando ``` flask run ```
+- Una vez realizada la instalación inicial, ejecuta el comando 
 ```pip freeze > requirements.txt```
