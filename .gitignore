@@ -1,2 +1,3 @@
-/entorno
+/.venv
 **/__pycache__/
+/flask_classic/config.py

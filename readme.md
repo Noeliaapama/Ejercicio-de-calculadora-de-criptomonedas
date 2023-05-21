@@ -11,3 +11,6 @@ Programa realizado en Python con el framework Flask en el que se consultará el 
 - Añade a ese documento ``` FLASK_APP=main.py ``` y ```FLASK_DEBUG=True``` para poder ejecutar el debug de la aplicación con el comando ``` flask run ```
 - Una vez realizada la instalación inicial, ejecuta el comando 
 ```pip freeze > requirements.txt```
+
+- Obten una Apikey en www.coinapi.io
+- Usa la plantilla "plantilla config", inserta tu Apikey en el lugar indicado y cambia el nombre a "config.py"

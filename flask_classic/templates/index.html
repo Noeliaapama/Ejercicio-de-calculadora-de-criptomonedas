@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Aplicación de cambio de criptos</title>
+    <link rel="stylesheet" href="/static/pico.css">
+    <link rel="stylesheet" href="/static/styles.css">
+    <li><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" /></li>
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <ul>
+                    <h1>Aplicación cambio de criptos</h1>
+                
+                </ul>
+                <ul>
+                    <li><a href="/" role="button">Inicio</a></li>
+                    <li><a href="/purchase" role="button">Compra</a></li>
+                    <li><a href="/status" role="button">Estado</a></li>
+                
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+    <div class="container" id="tabla">
+        <table>
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">From</th>
+                <th scope="col">Quantity from</th>
+                <th scope="col">To</th>
+                <th scope="col">Quantity to</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for item in datos %}
+                    <tr>
+                        <th>{{item.id}}</th>
+                        <td>{{item.date}}</td>
+                        <td>{{item.time}}</td>
+                        <td>{{item.from}}</td>
+                        <td>{{item.quantity_from}}</td>
+                        <td>{{item.to}}</td>
+                        <td>{{item.quantity_to}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <footer>
+        <div class="container"></div>
+            &copy; Proyecto final Noelia Aparicio
+        </div>
+    </footer>
+</body>
+</html>

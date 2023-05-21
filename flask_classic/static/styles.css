@@ -1,0 +1,31 @@
+header, footer{
+    background-color: #5abdca;
+    color: #424646;
+    font-size: 1.4em;
+    font-weight: bold;
+    height: 300px;
+    
+}
+
+body{
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    margin: 0;
+}
+
+ul.errors{
+    color: red;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+ul.flashes{
+    color: greenyellow;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+#tabla{
+    height: 450px;
+}
