@@ -29,3 +29,23 @@ ul.flashes{
 #tabla{
     height: 450px;
 }
+
+/* #from_to{
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    border: 1px solid;
+}
+#qfrom_qto{
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    border: 1px solid;
+    
+} */
+
+#flex_container {
+    display: flex;
+    justify-content: center;
+    border: 1px solid;
+  }

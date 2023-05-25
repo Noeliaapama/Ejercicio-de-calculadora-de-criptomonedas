@@ -14,3 +14,5 @@ Programa realizado en Python con el framework Flask en el que se consultará el 
 
 - Obten una Apikey en www.coinapi.io
 - Usa la plantilla "plantilla config", inserta tu Apikey en el lugar indicado y cambia el nombre a "config.py"
+
+- Para usar la misma base de datos usada en este programa, pega el código de "sentencia_create_criptos.sql" y pégala en tu base de datos.
