@@ -2,32 +2,30 @@
 {% block section %}
 
 <form action="/purchase" method="POST">
-    {{requests}}
     <div id="flex_container">
         <div  id="from_to">
-            <label for="from">From</label>
+            <label name="from">From</label>
             <select name="from" value="{{request.from}}" required>
-                <option value="EUR">EUR</option>
-                {% for c in cur %}
-                <option>{{cur}}</option>
+                {% for item in cur %}
+                <option value="{{item}}">{{item}}</option>
                 {% endfor %}
             </select>
+            <label name="qfrom">Quantity from</label>
+            <input type="text" name="qfrom" value="{{request.qfrom}}"  required>
             
-            
-            <label for="to">To:</label>
+            <label name="to">To:</label>
             <select name="to" value="{{request.to}}" required> 
                 <option value="criptos" selected>Selecciona una moneda o criptomoneda</option>
-                <option>{{cur}}</option>
+                {% for item in cur %}
+                <option value="{{item}}">{{item}}</option>
+                {% endfor %}               
             </select>
-                 
-            <label name="qfrom">Quantity from</label>
-            <input name="qfrom" value="{{request.qfrom}}" required>
 
-            <label name="qto">Quantity to</label>
-            <input name= 'qto' value="{{request.qto}}">
+            <label name="qto" value="{{request.qto}}">Quantity to</label>
+            <input name= 'qto'>
 
-            <label name="pu">P.U</label>
-            <input name= 'pu' value="{{request.pu}}" >
+            <label name="pu" value="{{request.pu}}">P.U</label>
+            <input name= 'pu'>
 
             <input type="submit" name="btn" value="Calcular">
             <input type="submit" name="btn" value="Guardar">
