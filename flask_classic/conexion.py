@@ -19,3 +19,4 @@ def conexion(): #aqui hacemos la conexion con la base de datos
     li_diccionario.append(diccionario)
     con.close() #cerramos la query
     return li_diccionario
+

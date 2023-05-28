@@ -8,6 +8,7 @@ from flask_classic.conexion import *
 @app.route("/")
 def index():
     dic_index = conexion()
+
     return render_template ("index.html", datos=dic_index) 
     
 #rutas inicio, compra y estado 
@@ -21,15 +22,15 @@ def compra():
         return render_template("forms.html", cur=currency)
     else:
         if request.form["btn"] == 'Calcular':
-            q = 0.756 #esto seria la consulta a apicoin
+            q = 000.756666   #esto seria la consulta a apicoin
             pu=float(request.form['qfrom'])/q
 
             respuesta = {
-                'from': q,
+                'from': request.form['from'],
                 'qfrom':request.form['qfrom'] ,
                 'to': request.form['to'],
-                'qto': request.form['qto'],
-                'pu': str(pu)
+                'qto': q,
+                'pu': pu
             }
             return render_template('forms.html', cur=currency, request = respuesta)
         else:
@@ -43,3 +44,5 @@ def compra():
 @app.route("/status")
 def estado():
     return render_template ("status.html")
+
+

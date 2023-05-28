@@ -21,12 +21,11 @@
                 {% endfor %}               
             </select>
 
-            <label name="qto" value="{{request.qto}}">Quantity to</label>
-            <input name= 'qto'>
+            Q: <span>{{request.qto}}</span><br>
+            
+            PU: <span>{{request.pu}}</span>
 
-            <label name="pu" value="{{request.pu}}">P.U</label>
-            <input name= 'pu'>
-
+            
             <input type="submit" name="btn" value="Calcular">
             <input type="submit" name="btn" value="Guardar">
 
