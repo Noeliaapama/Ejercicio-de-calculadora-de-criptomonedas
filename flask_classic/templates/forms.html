@@ -14,12 +14,12 @@
             <label name="qfrom">Quantity from</label>
             <input type="text" name="qfrom" value="{{request.qfrom}}"  required>
             
-            <label name="to">To:</label>
-            <select name="to" value="{{request.to}}" required> 
+            <label name="mto">To:</label>
+            <select name="mto" value="{{request.mto}}" required> 
                 {% for item in cur %}
                     <option value="{{item}}">{{item}}</option>
                 {% endfor %}  
-                <option value="{{request.to}}" placeholder="{{request.to}}" selected>{{request.to}}</option>             
+                <option value="{{request.mto}}" placeholder="{{request.mto}}" selected>{{request.mto}}</option>             
             </select>
 
             Q: <span>{{request.qto}}</span><br>

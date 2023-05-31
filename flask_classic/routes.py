@@ -22,14 +22,14 @@ def calcular_respuesta(request_form):
     q=0
     
     moneda_cambio = CambioMoneda([request_form['mfrom']])
-    api_cambio = moneda_cambio.cambio(APIKEY, [request_form['mfrom'], request_form['to']])   
+    api_cambio = moneda_cambio.cambio(APIKEY, [request_form['mfrom'], request_form['mto']])   
     q = float(api_cambio) #esto seria la consulta a apicoin
     
     pu=float(request_form['qfrom'])/q
     respuesta = {
         'mfrom': request_form['mfrom'],
         'qfrom':request_form['qfrom'],
-        'to': request_form['to'],
+        'mto': request_form['mto'],
         'qto': q,
         'pu': pu
         }
@@ -63,7 +63,7 @@ def compra():
     
                 reg_guardar = CambioMoneda(request.form['mfrom'])
                 hora_actual=datetime.today().time().strftime('%H:%M:%S')
-                registroForm = (None, date.today(), hora_actual, respuesta['mfrom'], respuesta['qfrom'], respuesta['to'], respuesta['qto'])
+                registroForm = (None, date.today(), hora_actual, respuesta['mfrom'], respuesta['qfrom'], respuesta['mto'], respuesta['qto'])
                 reg_guardar.registro(registroForm)
                 
                 return redirect("/")
@@ -81,6 +81,7 @@ def compra():
 def estado():
     resultado_inversion=PageStatus.inversion()
     resultado_recuperado=PageStatus.recuperado()
-    resultado_total=PageStatus.valor_total()
+    #resultado_total=PageStatus.valor_total()
 
-    return render_template ("status.html", invertir=resultado_inversion[0][0], mon_recuperadas=resultado_recuperado[0][0], suma_total=resultado_total[0][0])
+    return render_template ("status.html", invertir=resultado_inversion[0][0], mon_recuperadas=resultado_recuperado[0][0])
+    #suma_total=resultado_total[0][0]

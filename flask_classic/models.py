@@ -62,7 +62,7 @@ class CambioMoneda:
         
         
     def registro(self, registroForm):
-        conect_registro = Conexion(f"INSERT INTO mov_criptos ('id', 'date', 'time', 'mfrom', 'quantity_from', 'to', 'quantity_to') VALUES (?,?,?,?,?,?,?)", registroForm)
+        conect_registro = Conexion(f"INSERT INTO mov_criptos ('id', 'date', 'time', 'mfrom', 'quantity_from', 'mto', 'quantity_to') VALUES (?,?,?,?,?,?,?)", registroForm)
         conect_registro.con.commit()
         conect_registro.con.close()
     
@@ -78,7 +78,7 @@ class PageStatus:
     #comprobar después si funciona, ya que es una base pero no está comprobado
 
     def recuperado():
-        conect_recup = Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE 'to' = 'EUR' AND quantity_from > 0")
+        conect_recup = Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE 'mto' = 'EUR' AND quantity_from > 0")
         result_recup = conect_recup.res.fetchall()
         conect_recup.con.close()
         return result_recup

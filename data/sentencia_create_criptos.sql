@@ -4,7 +4,7 @@ CREATE TABLE "mov_criptos" (
 	"time"	TEXT NOT NULL,
 	"mfrom"	TEXT NOT NULL,
 	"quantity_from"	REAL NOT NULL,
-	"to"	TEXT NOT NULL,
+	"mto"	TEXT NOT NULL,
 	"quantity_to"	REAL NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
 )
