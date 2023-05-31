@@ -1,22 +1,15 @@
 import sqlite3
+from flask_classic import BBDD
 
-def conexion(): #aqui hacemos la conexion con la base de datos
-    con = sqlite3.connect("data/mov_criptos.sqlite")
-    cur = con.cursor()
-    res = cur.execute ("select * from mov_criptos;")
-    #necesitamos recorrer la información de la base de datos
-    fila = res.fetchall() 
-    columna = res.description
-    #necesitamos crearnos un diccionario de rutas index
-    li_diccionario=[]
+class Conexion:
+    def __init__(self,querySql,params=[]):
+        self.con = sqlite3.connect(BBDD)
+        self.cur = self.con.cursor()
+        self.res = self.cur.execute(querySql,params)
 
-    for f in fila:
-        diccionario = {}
-        posicion = 0
-        for c in columna:
-            diccionario[c[0]] = f[posicion]
-            posicion += 1
-    li_diccionario.append(diccionario)
-    con.close() #cerramos la query
-    return li_diccionario
-
+    def añadir_fila(id, date, time, from, quantity_from, to, quantity_to):
+        conn = sqlite3.connect(BBDD)
+        c = conn.cursor()
+        c.execute("INSERT INTO mov_criptos ('id', 'date', 'time', 'from', 'quantity_from', 'to', 'quantity_to') VALUES (?,?,?,?,?,?,?)", ('id', 'date', 'time', 'from', 'quantity_from', 'to', 'quantity_to'))
+        conn.commit()
+        conn.close()

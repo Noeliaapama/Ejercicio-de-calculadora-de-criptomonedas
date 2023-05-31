@@ -7,18 +7,19 @@
             <label name="from">From</label>
             <select name="from" value="{{request.from}}" required>
                 {% for item in cur %}
-                <option value="{{item}}">{{item}}</option>
+                    <option value="{{item}}">{{item}}</option>
                 {% endfor %}
+                <option value="{{request.from}}" placeholder="{{request.from}}" selected>{{request.from}}</option>
             </select>
             <label name="qfrom">Quantity from</label>
             <input type="text" name="qfrom" value="{{request.qfrom}}"  required>
             
             <label name="to">To:</label>
             <select name="to" value="{{request.to}}" required> 
-                <option value="criptos" selected>Selecciona una moneda o criptomoneda</option>
                 {% for item in cur %}
-                <option value="{{item}}">{{item}}</option>
-                {% endfor %}               
+                    <option value="{{item}}">{{item}}</option>
+                {% endfor %}  
+                <option value="{{request.to}}" placeholder="{{request.to}}" selected>{{request.to}}</option>             
             </select>
 
             Q: <span>{{request.qto}}</span><br>
@@ -29,6 +30,6 @@
             <input type="submit" name="btn" value="Calcular">
             <input type="submit" name="btn" value="Guardar">
 
-</div>
+    </div>
 </form>
 {% endblock %}

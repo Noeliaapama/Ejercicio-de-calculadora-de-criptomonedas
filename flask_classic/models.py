@@ -3,6 +3,22 @@ from flask_classic.config import APIKEY
 from flask_classic.routes import *
 from flask_classic.conexion import *
 
+def conexion_base(): #aqui hacemos la conexion con la base de datos
+    conectar = Conexion ("select * from mov_criptos;")
+    fila = conectar.res.fetchall() 
+    columna = conectar.res.description
+    #necesitamos crearnos un diccionario de rutas index
+    li_diccionario=[]
+    if fila:
+        for f in fila:
+            diccionario = {}
+            posicion = 0
+            for c in columna:
+                diccionario[c[0]] = f[posicion]
+                posicion += 1
+        li_diccionario.append(diccionario)
+    conectar.con.close() #cerramos la query
+    return li_diccionario
 
 class ModelError(Exception):
      pass
@@ -32,45 +48,45 @@ class CambioMoneda:
 
     def cambio(self, APIKEY, respuesta):
         mon1 = respuesta[0]
-        mon2 = respuesta[2]
+        mon2 = respuesta[1]
 
         r = requests.get(f'https://rest.coinapi.io/v1/exchangerate/{mon1}/{mon2}?apikey={APIKEY}') #esta informacion viene de solicitudes HTTP
         li_currency =r.json()
         self.status_code = r.status_code
         if r.status_code == 200:
             self.rate = li_currency ['rate']
-            self.time = li_currency ['time']
+            rate= self.rate
+            return rate
         else:
             raise ModelError(f"status: {r.status_code}, error: {li_currency['error']}")
         
-    def registro(registroForm):
-        con = sqlite3.connect ("data/mov_criptos.sqlite")
-        cur = con.cursor()
-        res = cur.execute("insert into mov_criptos (id, date, time, from, quantity_from, to, quantity_to) values (?,?,?)", registroForm)
-
-        con.commit()
-        con.close
-
+    def registro(self, registroForm):
+        conect_registro = Conexion(f"INSERT INTO mov_criptos ('id', 'date', 'time', 'from', 'quantity_from', 'to', 'quantity_to') VALUES (?,?,?,?,?,?,?)", registroForm)
+        conect_registro.con.commit()
+        conect_registro.con.close()
+        
 
 class PageStatus:
+    
     def inversion():
-        conect_inv = conexion("select sum (quantity_from) from mov_criptos where quantity > 0")
+        conect_inv = Conexion(f"select sum (quantity_from) from mov_criptos where quantity > 0")
         result_inv = conect_inv.res.fetchall()
         conect_inv.con.close()
         return result_inv
     #comprobar después si funciona, ya que es una base pero no está comprobado
 
     def recuperado():
-        conect_recup = conexion("select sum (quantity_to) from mov_criptos where quantity > 0")
+        conect_recup = Conexion(f"select sum (quantity_to) from mov_criptos where quantity > 0")
         result_recup = conect_recup.res.fetchall()
         conect_recup.con.close()
         return result_recup
     
     def valor_total():
-        conect_vato= conexion("select quantity_from-quantity_to as resultado from mov_criptos")
+        conect_vato= Conexion(f"select quantity_from-quantity_to as resultado from mov_criptos")
         resultado = conect_vato.res.fectchall()
         conect_vato.con.close()
         return resultado
+    
     
     #falta valor actual
 
