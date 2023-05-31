@@ -4,12 +4,12 @@
 <form action="/purchase" method="POST">
     <div id="flex_container">
         <div  id="from_to">
-            <label name="from">From</label>
-            <select name="from" value="{{request.from}}" required>
+            <label name="mfrom">From</label>
+            <select name="mfrom" value="{{request.mfrom}}" required>
                 {% for item in cur %}
                     <option value="{{item}}">{{item}}</option>
                 {% endfor %}
-                <option value="{{request.from}}" placeholder="{{request.from}}" selected>{{request.from}}</option>
+                <option value="{{request.mfrom}}" placeholder="{{request.mfrom}}" selected>{{request.mfrom}}</option>
             </select>
             <label name="qfrom">Quantity from</label>
             <input type="text" name="qfrom" value="{{request.qfrom}}"  required>

@@ -4,7 +4,7 @@ from flask_classic.routes import *
 from flask_classic.conexion import *
 
 def conexion_base(): #aqui hacemos la conexion con la base de datos
-    conectar = Conexion ("select * from mov_criptos;")
+    conectar = Conexion ("SELECT * FROM mov_criptos;")
     fila = conectar.res.fetchall() 
     columna = conectar.res.description
     #necesitamos crearnos un diccionario de rutas index
@@ -16,7 +16,7 @@ def conexion_base(): #aqui hacemos la conexion con la base de datos
             for c in columna:
                 diccionario[c[0]] = f[posicion]
                 posicion += 1
-        li_diccionario.append(diccionario)
+            li_diccionario.append(diccionario)
     conectar.con.close() #cerramos la query
     return li_diccionario
 
@@ -60,29 +60,31 @@ class CambioMoneda:
         else:
             raise ModelError(f"status: {r.status_code}, error: {li_currency['error']}")
         
+        
     def registro(self, registroForm):
-        conect_registro = Conexion(f"INSERT INTO mov_criptos ('id', 'date', 'time', 'from', 'quantity_from', 'to', 'quantity_to') VALUES (?,?,?,?,?,?,?)", registroForm)
+        conect_registro = Conexion(f"INSERT INTO mov_criptos ('id', 'date', 'time', 'mfrom', 'quantity_from', 'to', 'quantity_to') VALUES (?,?,?,?,?,?,?)", registroForm)
         conect_registro.con.commit()
         conect_registro.con.close()
-        
+    
+
 
 class PageStatus:
     
     def inversion():
-        conect_inv = Conexion(f"select sum (quantity_from) from mov_criptos where quantity > 0")
+        conect_inv = Conexion(f"SELECT SUM (quantity_from) FROM mov_criptos WHERE quantity_from > 0")
         result_inv = conect_inv.res.fetchall()
         conect_inv.con.close()
         return result_inv
     #comprobar después si funciona, ya que es una base pero no está comprobado
 
     def recuperado():
-        conect_recup = Conexion(f"select sum (quantity_to) from mov_criptos where quantity > 0")
+        conect_recup = Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE 'to' = 'EUR' AND quantity_from > 0")
         result_recup = conect_recup.res.fetchall()
         conect_recup.con.close()
         return result_recup
     
     def valor_total():
-        conect_vato= Conexion(f"select quantity_from-quantity_to as resultado from mov_criptos")
+        conect_vato= Conexion(f"SELECT quantity_from-quantity_to AS RESULTADO FROM mov_criptos")
         resultado = conect_vato.res.fectchall()
         conect_vato.con.close()
         return resultado
