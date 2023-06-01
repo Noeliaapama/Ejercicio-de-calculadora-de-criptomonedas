@@ -48,19 +48,11 @@ def compra():
     else:
         if request.form["btn"] == 'Calcular':
             respuesta = calcular_respuesta(request.form)
-            
-            # Se guarda la respuesta del formulario en la sesión de flask
-            # form_data = request.form.to_dict()
-            # session['form_data'] = form_data
-            
-            # return render_template('forms.html', cur=currency, request = respuesta,form_data=form_data)
-
             return render_template('forms.html', cur=currency, request = respuesta)
             
         else:
             if request.form["btn"] == 'Guardar':
                 respuesta = calcular_respuesta(request.form)
-    
                 reg_guardar = CambioMoneda(request.form['mfrom'])
                 hora_actual=datetime.today().time().strftime('%H:%M:%S')
                 registroForm = (None, date.today(), hora_actual, respuesta['mfrom'], respuesta['qfrom'], respuesta['mto'], respuesta['qto'])
@@ -81,7 +73,6 @@ def compra():
 def estado():
     resultado_inversion=PageStatus.inversion()
     resultado_recuperado=PageStatus.recuperado()
-    #resultado_total=PageStatus.valor_total()
+    resultado_valor_compra= resultado_inversion[0][0] - resultado_recuperado [0][0]
 
-    return render_template ("status.html", invertir=resultado_inversion[0][0], mon_recuperadas=resultado_recuperado[0][0])
-    #suma_total=resultado_total[0][0]
+    return render_template ("status.html", invertir=resultado_inversion[0][0], mon_recuperadas=resultado_recuperado[0][0], valor_compra = resultado_valor_compra)

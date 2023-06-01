@@ -75,20 +75,12 @@ class PageStatus:
         result_inv = conect_inv.res.fetchall()
         conect_inv.con.close()
         return result_inv
-    #comprobar después si funciona, ya que es una base pero no está comprobado
 
-    def recuperado():
-        conect_recup = Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE 'mto' = 'EUR' AND quantity_from > 0")
+    def recuperado():       
+        conect_recup = Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE mto = 'EUR' AND quantity_from > 0")
         result_recup = conect_recup.res.fetchall()
         conect_recup.con.close()
         return result_recup
-    
-    def valor_total():
-        conect_vato= Conexion(f"SELECT quantity_from-quantity_to AS RESULTADO FROM mov_criptos")
-        resultado = conect_vato.res.fectchall()
-        conect_vato.con.close()
-        return resultado
-    
     
     #falta valor actual
 
