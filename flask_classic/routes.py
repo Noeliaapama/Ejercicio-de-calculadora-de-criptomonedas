@@ -63,16 +63,13 @@ def compra():
     
             #flash ("Movimiento registrado")
 
-           #aqui debe ir la funcion registro, que está dentro de la clase
-
             #hacer que inicio funcione en la pantalla de compra y estado tambien
-
-
 
 @app.route("/status")
 def estado():
     resultado_inversion=PageStatus.inversion()
     resultado_recuperado=PageStatus.recuperado()
-    resultado_valor_compra= resultado_inversion[0][0] - resultado_recuperado [0][0]
+    resultado_valor_compra=resultado_inversion[0][0] - resultado_recuperado [0][0]
+    v_actual=PageStatus.valor_actual()
 
-    return render_template ("status.html", invertir=resultado_inversion[0][0], mon_recuperadas=resultado_recuperado[0][0], valor_compra = resultado_valor_compra)
+    return render_template ("status.html", invertir=resultado_inversion[0][0], mon_recuperadas=resultado_recuperado[0][0], valor_compra = resultado_valor_compra, val_actual=v_actual)

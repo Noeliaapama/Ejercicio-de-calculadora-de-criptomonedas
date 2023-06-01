@@ -12,6 +12,7 @@
                 <th scope="col">Quantity from</th>
                 <th scope="col">To</th>
                 <th scope="col">Quantity to</th>
+                <th scope="col">P.U.</th>
               </tr>
             </thead>
             <tbody>
@@ -21,7 +22,7 @@
                 
                 {% for item in datos %}
                     <tr>
-                        <th>{{item.id}}</th>
+                        <th>{{item.id}}</th> 
                         <td>{{item.date}}</td>
                         <td>{{item.time}}</td>
                         <td>{{item.mfrom}}</td>

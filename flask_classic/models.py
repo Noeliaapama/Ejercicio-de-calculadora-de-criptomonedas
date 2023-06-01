@@ -2,6 +2,7 @@ import requests
 from flask_classic.config import APIKEY
 from flask_classic.routes import *
 from flask_classic.conexion import *
+from flask_classic import BBDD
 
 def conexion_base(): #aqui hacemos la conexion con la base de datos
     conectar = Conexion ("SELECT * FROM mov_criptos;")
@@ -67,9 +68,11 @@ class CambioMoneda:
         conect_registro.con.close()
     
 
-
 class PageStatus:
-    
+
+    def __init__(self):
+        pass
+
     def inversion():
         conect_inv = Conexion(f"SELECT SUM (quantity_from) FROM mov_criptos WHERE quantity_from > 0")
         result_inv = conect_inv.res.fetchall()
@@ -82,7 +85,25 @@ class PageStatus:
         conect_recup.con.close()
         return result_recup
     
-    #falta valor actual
+    def valor_actual():
+        conect_valor = Conexion("SELECT DISTINCT mto FROM mov_criptos")
+        query = conect_valor.res
+
+        moneda_cripto = [fila[0] for fila in query.fetchall()]
+
+        valor_total = 0
+
+        for cripto in moneda_cripto:
+            conect_cantidad = Conexion(f"SELECT SUM(quantity_to) - SUM(quantity_from) FROM mov_criptos WHERE mto = '{cripto}' OR mfrom = '{cripto}'")
+            cantidad = conect_cantidad.res.fetchone()[0]
+            respuesta_valor = requests.get(f"https://rest.coinapi.io/v1/exchangerate/{cripto}/EUR?apikey={APIKEY}")
+            cambio_valor = respuesta_valor.json()["rate"]
+
+            valor = cantidad * cambio_valor
+            valor_total += valor
+
+        return valor_total
+
 
 
 
