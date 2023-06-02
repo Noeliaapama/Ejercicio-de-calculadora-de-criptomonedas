@@ -51,7 +51,7 @@ class CambioMoneda:
         mon1 = respuesta[0]
         mon2 = respuesta[1]
 
-        r = requests.get(f'https://rest.coinapi.io/v1/exchangerate/{mon1}/{mon2}?apikey={APIKEY}') #esta informacion viene de solicitudes HTTP
+        r = requests.get(f'https://rest.coinapi.io/v1/exchangerate/{mon1}/{mon2}?apikey={APIKEY}')
         li_currency =r.json()
         self.status_code = r.status_code
         if r.status_code == 200:
@@ -66,7 +66,27 @@ class CambioMoneda:
         conect_registro = Conexion(f"INSERT INTO mov_criptos ('id', 'date', 'time', 'mfrom', 'quantity_from', 'mto', 'quantity_to') VALUES (?,?,?,?,?,?,?)", registroForm)
         conect_registro.con.commit()
         conect_registro.con.close()
+    '''
+    def venta(self, criptos):
+        conect_venta = Conexion(f"SELECT SUM(quantity_to) - SUM(quantity_from) FROM mov_criptos WHERE mto = '{criptos}' OR mfrom = '{criptos}'")
+        result_venta = conect_venta.res
+        comparacion = result_venta.fetchone()[0]
+        return comparacion
+    '''
+
+    def suma_qfrom(self, cripto):
+        conect_suma_qfrom= Conexion(f"SELECT SUM(quantity_from) FROM mov_criptos WHERE mfrom = {cripto}")
+        result_suma_qfrom = conect_suma_qfrom.res.fetchall()
+        conect_suma_qfrom.con.close()
+        return result_suma_qfrom
+
+    def suma_qto(self, cripto):              
+        conect_suma_qto= Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE mto = {cripto}")
+        result_suma_qto = conect_suma_qto.res.fetchall()
+        conect_suma_qto.con.close()
+        return result_suma_qto
     
+
 
 class PageStatus:
 
@@ -74,29 +94,49 @@ class PageStatus:
         pass
 
     def inversion():
-        conect_inv = Conexion(f"SELECT SUM (quantity_from) FROM mov_criptos WHERE quantity_from > 0")
+        conect_inv = Conexion(f"SELECT SUM (quantity_from) FROM mov_criptos WHERE quantity_from >= 0")
+        
         result_inv = conect_inv.res.fetchall()
         conect_inv.con.close()
         return result_inv
 
     def recuperado():       
-        conect_recup = Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE mto = 'EUR' AND quantity_from > 0")
+        conect_recup = Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE mto = 'EUR' AND quantity_to >= 0")
         result_recup = conect_recup.res.fetchall()
         conect_recup.con.close()
         return result_recup
     
     def valor_actual():
         conect_valor = Conexion("SELECT DISTINCT mto FROM mov_criptos")
-        query = conect_valor.res
+        result_valor = conect_valor.res.fetchall()
 
-        moneda_cripto = [fila[0] for fila in query.fetchall()]
+        moneda_cripto = [cripto_mto[0] for cripto_mto in result_valor]
 
         valor_total = 0
+        
+        for item in moneda_cripto:
 
-        for cripto in moneda_cripto:
-            conect_cantidad = Conexion(f"SELECT SUM(quantity_to) - SUM(quantity_from) FROM mov_criptos WHERE mto = '{cripto}' OR mfrom = '{cripto}'")
-            cantidad = conect_cantidad.res.fetchone()[0]
-            respuesta_valor = requests.get(f"https://rest.coinapi.io/v1/exchangerate/{cripto}/EUR?apikey={APIKEY}")
+            valor_qfrom = Conexion(f"SELECT SUM(quantity_from) FROM mov_criptos WHERE mfrom = '{item}'")
+            result_qfrom = valor_qfrom.res.fetchall()
+            valor_qfrom.con.close()
+
+            valor_qto = Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE mto = '{item}'")
+            result_qto = valor_qto.res.fetchall()
+            valor_qto.con.close()
+
+            if result_qfrom[0][0] is None:
+                result_qfrom = 0
+            else:
+                result_qfrom = result_qfrom[0][0]
+
+            if result_qto[0][0] is None:
+                result_qto = 0
+            else:
+                result_qto = result_qto[0][0]
+
+            cantidad = result_qfrom - result_qto
+
+            respuesta_valor = requests.get(f"https://rest.coinapi.io/v1/exchangerate/{item}/EUR?apikey={APIKEY}")
             cambio_valor = respuesta_valor.json()["rate"]
 
             valor = cantidad * cambio_valor
