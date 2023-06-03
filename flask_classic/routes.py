@@ -8,7 +8,6 @@ from datetime import date, datetime, time
 @app.route("/")
 def index():
     dic_index = conexion_base()
-    print(dic_index)
     no_data = False
     if not dic_index:
         no_data = True
@@ -86,11 +85,8 @@ def compra():
 def estado():
     resultado_inversion=PageStatus.inversion()
     resultado_recuperado=PageStatus.recuperado()
-    if resultado_recuperado[0][0] is None:
+    if resultado_recuperado is None:
         resultado_recuperado = 0
-    else:
-        resultado_recuperado = resultado_recuperado[0][0]
-    resultado_inversion = resultado_inversion[0][0]
     resultado_valor_compra=resultado_inversion - resultado_recuperado
     v_actual=PageStatus.valor_actual()
 

@@ -28,8 +28,8 @@
                         <td>{{item.mfrom}}</td>
                         <td>{{item.quantity_from}}</td>
                         <td>{{item.mto}}</td>
-                        <td>{{item.quantity_to}}</td>
-                        <td>{{item.quantity_to/item.quantity_from}}</td>
+                        <td>{{item.quantity_to|round(4)}}</td>
+                        <td>{{(item.quantity_to/item.quantity_from)|round(5)}}</td>
                     </tr>
                 {% endfor %}
             </tbody>

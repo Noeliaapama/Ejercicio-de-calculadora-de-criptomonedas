@@ -98,13 +98,13 @@ class PageStatus:
         
         result_inv = conect_inv.res.fetchall()
         conect_inv.con.close()
-        return result_inv
+        return round(result_inv[0][0], 2)
 
     def recuperado():       
         conect_recup = Conexion(f"SELECT SUM(quantity_to) FROM mov_criptos WHERE mto = 'EUR' AND quantity_to >= 0")
         result_recup = conect_recup.res.fetchall()
         conect_recup.con.close()
-        return result_recup
+        return round(result_recup[0][0], 2)
     
     def valor_actual():
         conect_valor = Conexion("SELECT DISTINCT mto FROM mov_criptos")
@@ -142,7 +142,7 @@ class PageStatus:
             valor = cantidad * cambio_valor
             valor_total += valor
 
-        return valor_total
+        return round(valor_total, 2)
 
 
 
