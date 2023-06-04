@@ -29,7 +29,12 @@
               <td>{{mon_recuperadas}} €</td>
               <td>{{valor_compra}} €</td>
               <td>{{val_actual}} €</td>
-              <td>{{(val_actual-valor_compra)|round(2)}} €</td>
+              {% if (val_actual-valor_compra) < 0 %}
+
+              <td style="color: red;">{{(val_actual-valor_compra)|round(2)}} €</td>
+              {% else %}
+              <td style="color: green;">{{(val_actual-valor_compra)|round(2)}} €</td>
+              {% endif %}
             </tr>
         </tbody>
     </table>
