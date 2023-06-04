@@ -37,7 +37,6 @@ def calcular_respuesta(request_form):
 def compra():
     disable_purchase = request.path == '/purchase'
     monedas_existentes = CambioMoneda.monedas_form()
-    #resultado_mon_existentes = monedas_existentes.monedas_form(request.form)
 
     currency = [
         'EUR','BTC','ETH','USDT','BNB','XRP','ADA','SOL','DOT','MATIC'
@@ -61,7 +60,6 @@ def compra():
                 sumas_qto = sumas.suma_qto(request.form['mto'])
                 resultado_suma = sumas_qfrom - sumas_qto
                 if resultado_suma <= 0 and request.form['mfrom'] != 'EUR':                 
-                    print(resultado_suma)
                     flash(f"No puedes vender más {request.form['mfrom']} de los que tienes actualmente")
                 
                     return render_template('forms.html', cur=currency, request = respuesta, disable_purch=disable_purchase)
@@ -71,8 +69,6 @@ def compra():
                     reg_guardar.registro(registroForm)
 
                 return redirect("/")
-
-            #hacer que inicio funcione en la pantalla de compra y estado tambien
 
 @app.route("/status")
 def estado():

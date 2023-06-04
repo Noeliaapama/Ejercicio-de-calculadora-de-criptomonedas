@@ -4,11 +4,10 @@ from flask_classic.routes import *
 from flask_classic.conexion import *
 from flask_classic import BBDD
 
-def conexion_base(): #aqui hacemos la conexion con la base de datos
+def conexion_base(): 
     conectar = Conexion ("SELECT * FROM mov_criptos;")
     fila = conectar.res.fetchall() 
     columna = conectar.res.description
-    #necesitamos crearnos un diccionario de rutas index
     li_diccionario=[]
     if fila:
         for f in fila:
@@ -18,7 +17,7 @@ def conexion_base(): #aqui hacemos la conexion con la base de datos
                 diccionario[c[0]] = f[posicion]
                 posicion += 1
             li_diccionario.append(diccionario)
-    conectar.con.close() #cerramos la query
+    conectar.con.close() 
     return li_diccionario
 
 class ModelError(Exception):
@@ -68,7 +67,6 @@ class CambioMoneda:
             rate= self.rate
             return rate
         else:
-            # Para cuando la API se queda sin peticiones. RATE FIJO
             if r.status_code == 429:
                 rate = 1.5
                 flash(f"Alcanzaste el número máximo de peticiones en la API. Rate fijado a muestra 1.5")
@@ -156,9 +154,8 @@ class PageStatus:
             cantidad = result_qfrom - result_qto
 
             respuesta_valor = requests.get(f"https://rest.coinapi.io/v1/exchangerate/{item}/EUR?apikey={APIKEY}")
-            # cambio_valor = respuesta_valor.json()["rate"]
 
-            # Descomenta esto si te quedas sin peticiones en la API. RATE FIJO -----------------
+            # Aplicacion de un rato fijo al quedar sin peticiones en la API para poder seguir usando la app.
             if respuesta_valor.status_code == 200:
                 cambio_valor = respuesta_valor.json()["rate"]
             else:
