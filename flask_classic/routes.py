@@ -18,15 +18,9 @@ def index():
 
 def calcular_respuesta(request_form):
     q=0
-    #ventas = CambioMoneda.venta(request_form['qfrom'], request_form['mfrom'])
     moneda_cambio = CambioMoneda([request_form['mfrom']])
     api_cambio = moneda_cambio.cambio(APIKEY, [request_form['mfrom'], request_form['mto']])   
-    q = float(api_cambio) #esto seria la consulta a apicoin
-    '''
-    comparacion = ventas(request_form['mfrom'], request_form['qfrom'])
-    if float(request_form['qfrom']) > comparacion:
-        raise ValueError(f"No puedes vender {request_form['qfrom']} {request_form['mfrom']}: solo tienes {comparacion} disponible")
-    '''
+    q = float(api_cambio)
     pu=float(request_form['qfrom'])/q
     respuesta = {
         'mfrom': request_form['mfrom'],
@@ -40,42 +34,39 @@ def calcular_respuesta(request_form):
 
 @app.route("/purchase", methods=['GET','POST'])
 def compra():
-    
+    monedas_existentes = CambioMoneda.monedas_form()
+    #resultado_mon_existentes = monedas_existentes.monedas_form(request.form)
+
     currency = [
         'EUR','BTC','ETH','USDT','BNB','XRP','ADA','SOL','DOT','MATIC'
         ] 
-    
+
     if request.method == "GET":
-        return render_template("forms.html", cur=currency)
+        return render_template("forms.html", cur=currency, monexist=monedas_existentes) 
     else:
         if request.form["btn"] == 'Calcular':
             respuesta = calcular_respuesta(request.form)
-            #aqui va a ir el error de la funcion venta
-            
+
             return render_template('forms.html', cur=currency, request = respuesta)
-            
+
         else:
             if request.form["btn"] == 'Guardar':
                 respuesta = calcular_respuesta(request.form)
 
                 reg_guardar = CambioMoneda(request.form['mfrom'])
-                # qfrom = reg_guardar.suma_qfrom(request.form['mfrom'])
-                # qto = reg_guardar.suma_qto(request.form['mto'])
-                # if qfrom - qto < 0:
-                #     raise Exception("Error: qfrom - qto is negative")
-                # try:
-                #     sumas = CambioMoneda(cripto)
-                #     sumas_qfrom = sumas.suma_qfrom(cripto)
-                #     sumas_qto = sumas.suma_qto(cripto)
-                #     resultado_suma = sumas_qfrom - sumas_qto
-                #     resultado_suma > 0
-                # except ValueError as error:
-                #     flash("El no puedes vender más cantidad de la que tienes actualmente")
-
-                hora_actual=datetime.today().time().strftime('%H:%M:%S')
-                registroForm = (None, date.today(), hora_actual, respuesta['mfrom'], respuesta['qfrom'], respuesta['mto'], respuesta['qto'])
-                reg_guardar.registro(registroForm)
-                flash ("Movimiento registrado")
+                sumas = CambioMoneda(request.form)
+                sumas_qfrom = sumas.suma_qfrom(request.form['mfrom'])
+                sumas_qto = sumas.suma_qto(request.form['mto'])
+                resultado_suma = sumas_qfrom - sumas_qto
+                if resultado_suma <= 0 and request.form['mfrom'] != 'EUR':                 
+                    print(resultado_suma)
+                    flash(f"No puedes vender más {request.form['mfrom']} de los que tienes actualmente")
+                
+                    return render_template('forms.html', cur=currency, request = respuesta)
+                else:
+                    hora_actual=datetime.today().time().strftime('%H:%M:%S')
+                    registroForm = (None, date.today(), hora_actual, respuesta['mfrom'], respuesta['qfrom'], respuesta['mto'], respuesta['qto'])
+                    reg_guardar.registro(registroForm)
 
                 return redirect("/")
 

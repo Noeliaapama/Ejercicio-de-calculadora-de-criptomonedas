@@ -1,25 +1,39 @@
 {% extends "base.html" %}
 {% block section %}
 
+
 <form action="/purchase" method="POST">
+    
+    <div id="flash-messages">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+      </div>
+
     <div id="flex_container">
         <div  id="from_to">
             <label name="mfrom">From</label>
             <select name="mfrom" value="{{request.mfrom}}" required>
-                {% for item in cur %}
+              <option value="{{request.mfrom|default('EUR')}}" placeholder="{{request.mfrom|default('EUR')}}" selected>{{request.mfrom|default('EUR')}}</option>
+                {% for item in monexist %}
                     <option value="{{item}}">{{item}}</option>
                 {% endfor %}
-                <option value="{{request.mfrom}}" placeholder="{{request.mfrom}}" selected>{{request.mfrom}}</option>
             </select>
             <label name="qfrom">Quantity from</label>
             <input type="text" name="qfrom" value="{{request.qfrom}}"  required>
             
             <label name="mto">To:</label>
-            <select name="mto" value="{{request.mto}}" required> 
+            <select name="mto" value="{{request.mto}}" required>  
+              <option value="{{request.mto|default('Selecciona una moneda')}}" placeholder="{{request.mto|default('Selecciona una moneda')}}" selected>{{request.mto|default('Selecciona una moneda')}}</option> 
                 {% for item in cur %}
                     <option value="{{item}}">{{item}}</option>
-                {% endfor %}  
-                <option value="{{request.mto}}" placeholder="{{request.mto}}" selected>{{request.mto}}</option>             
+                {% endfor %}            
             </select>
 
             Q: <span>{{request.qto}}</span><br>
@@ -32,4 +46,5 @@
 
     </div>
 </form>
+
 {% endblock %}

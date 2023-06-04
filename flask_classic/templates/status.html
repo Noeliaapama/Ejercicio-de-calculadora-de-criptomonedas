@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 {% block section %}
+<div id="flash-messages">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+
 <div class="container" id="tabla_estado">
     <table>
         <thead>
@@ -8,6 +20,7 @@
             <th scope="col">Recuperado</th>
             <th scope="col">Valor de compra</th>
             <th scope="col">Valor actual</th>
+            <th scope="col">Ganancia</th>
           </tr>
         </thead>
         <tbody>
@@ -16,6 +29,7 @@
               <td>{{mon_recuperadas}} €</td>
               <td>{{valor_compra}} €</td>
               <td>{{val_actual}} €</td>
+              <td>{{(val_actual-valor_compra)|round(2)}} €</td>
             </tr>
         </tbody>
     </table>
