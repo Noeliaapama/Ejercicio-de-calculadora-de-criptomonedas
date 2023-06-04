@@ -9,11 +9,12 @@ from datetime import date, datetime, time
 def index():
     dic_index = conexion_base()
     no_data = False
+    disable_inicio = request.path == '/'
     if not dic_index:
         no_data = True
-        return render_template ("index.html", datos=dic_index, sin_data = no_data) 
+        return render_template ("index.html", datos=dic_index, sin_data = no_data, disable_ini=disable_inicio) 
     else:
-        return render_template ("index.html", datos=dic_index)
+        return render_template ("index.html", datos=dic_index, disable_ini=disable_inicio)
         
 
 def calcular_respuesta(request_form):
@@ -34,6 +35,7 @@ def calcular_respuesta(request_form):
 
 @app.route("/purchase", methods=['GET','POST'])
 def compra():
+    disable_purchase = request.path == '/purchase'
     monedas_existentes = CambioMoneda.monedas_form()
     #resultado_mon_existentes = monedas_existentes.monedas_form(request.form)
 
@@ -42,12 +44,12 @@ def compra():
         ] 
 
     if request.method == "GET":
-        return render_template("forms.html", cur=currency, monexist=monedas_existentes) 
+        return render_template("forms.html", cur=currency, monexist=monedas_existentes, disable_purch=disable_purchase) 
     else:
         if request.form["btn"] == 'Calcular':
             respuesta = calcular_respuesta(request.form)
 
-            return render_template('forms.html', cur=currency, request = respuesta)
+            return render_template('forms.html', cur=currency, request = respuesta, disable_purch=disable_purchase)
 
         else:
             if request.form["btn"] == 'Guardar':
@@ -62,7 +64,7 @@ def compra():
                     print(resultado_suma)
                     flash(f"No puedes vender más {request.form['mfrom']} de los que tienes actualmente")
                 
-                    return render_template('forms.html', cur=currency, request = respuesta)
+                    return render_template('forms.html', cur=currency, request = respuesta, disable_purch=disable_purchase)
                 else:
                     hora_actual=datetime.today().time().strftime('%H:%M:%S')
                     registroForm = (None, date.today(), hora_actual, respuesta['mfrom'], respuesta['qfrom'], respuesta['mto'], respuesta['qto'])
@@ -74,6 +76,7 @@ def compra():
 
 @app.route("/status")
 def estado():
+    disable_status = request.path == '/status'
     resultado_inversion=PageStatus.inversion()
     resultado_recuperado=PageStatus.recuperado()
     if resultado_recuperado is None:
@@ -81,4 +84,4 @@ def estado():
     resultado_valor_compra=resultado_inversion - resultado_recuperado
     v_actual=PageStatus.valor_actual()
 
-    return render_template ("status.html", invertir=resultado_inversion, mon_recuperadas=resultado_recuperado, valor_compra = resultado_valor_compra, val_actual=v_actual)
+    return render_template ("status.html", invertir=resultado_inversion, mon_recuperadas=resultado_recuperado, valor_compra = resultado_valor_compra, val_actual=v_actual, disable_stat=disable_status)

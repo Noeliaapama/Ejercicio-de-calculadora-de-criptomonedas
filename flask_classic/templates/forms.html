@@ -1,50 +1,60 @@
 {% extends "base.html" %}
 {% block section %}
 
+<div class="container">
+  <form class="form-control" id="form-compra" action="/purchase" method="POST">
+      
+      <div id="flash-messages">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <ul>
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+        </div>
 
-<form action="/purchase" method="POST">
-    
-    <div id="flash-messages">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <ul>
-              {% for message in messages %}
-                <li>{{ message }}</li>
+      <div class="row">
+        <div class="col">
+          <label class="form-label" name="mfrom">From</label>
+          <select class="form-select" name="mfrom" value="{{request.mfrom}}" required>
+            <option value="{{request.mfrom|default('EUR')}}" placeholder="{{request.mfrom|default('EUR')}}" selected>{{request.mfrom|default('EUR')}}</option>
+              {% for item in monexist %}
+                  <option value="{{item}}">{{item}}</option>
               {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
+          </select>
+          <label class="form-label" name="qfrom">Quantity from</label>
+          <input class="form-control" type="text" name="qfrom" value="{{request.qfrom}}"  required>
+          
+        </div>
+        <div class="col">
+          <label class="form-label" name="mto">To:</label>
+          <select class="form-select" name="mto" value="{{request.mto}}" required>  
+            <option value="{{request.mto|default('Selecciona una moneda')}}" placeholder="{{request.mto|default('Selecciona una moneda')}}" selected>{{request.mto|default('Selecciona una moneda')}}</option> 
+              {% for item in cur %}
+                  <option value="{{item}}">{{item}}</option>
+              {% endfor %}            
+          </select>
+          <div class="col-auto botones-form">
+            Q: <span class="form-text">{{request.qto}}</span><br>
+            
+            PU: <span class="form-text">{{request.pu}}</span>
+
+          </div>
+        </div>
       </div>
 
-    <div id="flex_container">
-        <div  id="from_to">
-            <label name="mfrom">From</label>
-            <select name="mfrom" value="{{request.mfrom}}" required>
-              <option value="{{request.mfrom|default('EUR')}}" placeholder="{{request.mfrom|default('EUR')}}" selected>{{request.mfrom|default('EUR')}}</option>
-                {% for item in monexist %}
-                    <option value="{{item}}">{{item}}</option>
-                {% endfor %}
-            </select>
-            <label name="qfrom">Quantity from</label>
-            <input type="text" name="qfrom" value="{{request.qfrom}}"  required>
-            
-            <label name="mto">To:</label>
-            <select name="mto" value="{{request.mto}}" required>  
-              <option value="{{request.mto|default('Selecciona una moneda')}}" placeholder="{{request.mto|default('Selecciona una moneda')}}" selected>{{request.mto|default('Selecciona una moneda')}}</option> 
-                {% for item in cur %}
-                    <option value="{{item}}">{{item}}</option>
-                {% endfor %}            
-            </select>
-
-            Q: <span>{{request.qto}}</span><br>
-            
-            PU: <span>{{request.pu}}</span>
-
-            
-            <input type="submit" name="btn" value="Calcular">
-            <input type="submit" name="btn" value="Guardar">
-
-    </div>
-</form>
+      <div class="row botones-form">
+        <div class="col">
+          <button class="btn btn-outline-info" type="submit" name="btn" value="Calcular">Calcular</button>
+        </div>
+        <div class="col">
+          <button class="btn btn-outline-primary" type="submit" name="btn" value="Guardar">Guardar</button>
+        </div>
+      </div>
+  </form>
+</div>
 
 {% endblock %}

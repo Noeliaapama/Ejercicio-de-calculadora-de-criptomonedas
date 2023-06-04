@@ -1,42 +1,46 @@
 {% extends "base.html" %}
 {% block section %}
-<div id="flash-messages">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+
+<div class="container">
+
+  <div class="container" id="tabla_estado">
+      <table class="table">
+          <thead>
+            <tr class="table-info">
+              <th scope="col">Invertido</th>
+              <th scope="col">Recuperado</th>
+              <th scope="col">Valor de compra</th>
+              <th scope="col">Valor actual</th>
+              <th scope="col">Ganancia</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <td>{{invertir}} €</td>
+                <td>{{mon_recuperadas}} €</td>
+                <td>{{valor_compra}} €</td>
+                <td>{{val_actual}} €</td>
+                {% if (val_actual-valor_compra) < 0 %}
+
+                <td style="color: red;">{{(val_actual-valor_compra)|round(2)}} €</td>
+                {% else %}
+                <td style="color: green;">{{(val_actual-valor_compra)|round(2)}} €</td>
+                {% endif %}
+              </tr>
+          </tbody>
+      </table>
   </div>
 
-<div class="container" id="tabla_estado">
-    <table>
-        <thead>
-          <tr>
-            <th scope="col">Invertido</th>
-            <th scope="col">Recuperado</th>
-            <th scope="col">Valor de compra</th>
-            <th scope="col">Valor actual</th>
-            <th scope="col">Ganancia</th>
-          </tr>
-        </thead>
-        <tbody>
-            <tr>
-              <td>{{invertir}} €</td>
-              <td>{{mon_recuperadas}} €</td>
-              <td>{{valor_compra}} €</td>
-              <td>{{val_actual}} €</td>
-              {% if (val_actual-valor_compra) < 0 %}
-
-              <td style="color: red;">{{(val_actual-valor_compra)|round(2)}} €</td>
-              {% else %}
-              <td style="color: green;">{{(val_actual-valor_compra)|round(2)}} €</td>
-              {% endif %}
-            </tr>
-        </tbody>
-    </table>
+  <div id="flash-messages">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+    </div>
 </div>
 {% endblock %}

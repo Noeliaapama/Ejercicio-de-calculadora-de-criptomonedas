@@ -1,4 +1,33 @@
-header, footer{
+/* *{
+    border: 1px solid;
+
+} */
+
+#tabla-home {
+    margin: 50px 0px 50px 0px;
+    height: 680px;
+
+}
+
+#cabecera {
+    
+    font-weight: bold;
+    /* height: 150px; */
+    padding-right: 20.0em;
+    padding-left: 20.0em;
+
+}
+
+#form-compra {
+    background-color: #F0FFFF;
+}
+
+.botones-form {
+    padding-top: 20px;
+}
+
+
+/* header, footer{
     background-color: #5abdca;
     color: #424646;
     font-size: 1.4em;
@@ -28,7 +57,7 @@ ul.flashes{
 
 #tabla{
     height: 450px;
-}
+} */
 
 /* #from_to{
     margin: auto;
@@ -44,8 +73,8 @@ ul.flashes{
     
 } */
 
-#flex_container {
+/* #flex_container {
     display: flex;
     justify-content: center;
     border: 1px solid;
-  }
+  } */
